@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
@@ -17,38 +19,43 @@ namespace Business.Concrete
             _carDal = carDal;
         }
 
-        public void Add(Car car)
+        public IResult Add(Car car)
         {
             if (car.Description.Length>2&&car.DailyPrice>0)
             {
                 _carDal.Add(car);
-                Console.WriteLine("Araba eklendi");
 
+                 return new SuccessResult(Messages.CarAdded);
             }
             else
             {
-                Console.WriteLine("Araba eklenemedi . Koşullara uygun Değil");
+                return new ErrorResult(Messages.CarDescriptionInvalid);
             }
+           
         }
 
-        public List<Car> GetAll()
+        public IDataResult<List<Car>> GetAll()
         {
-            return _carDal.GetAll();
+            if (DateTime.Now.Hour==22)
+            {
+                return new ErrorDataResult<List<Car>>(Messages.MaintenanceTime);
+            }
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(),Messages.CarListed);
         }
 
-        public List<CarDetailDto> GetCarDetails()
+        public IDataResult<List<CarDetailDto>> GetCarDetails()
         {
-            return _carDal.GetCarDetails();
+            return new SuccessDataResult<List<CarDetailDto>>( _carDal.GetCarDetails());
         }
 
-        public Car GetCarsByBrandId(int id)
+        public IDataResult<Car> GetCarsByBrandId(int id)
         {
-            return _carDal.Get(c=>c.BrandId==id);
+            return new SuccessDataResult<Car>(_carDal.Get(c=>c.BrandId==id));
         }
 
-        public Car GetCarsByColorId(int id)
+        public IDataResult<Car> GetCarsByColorId(int id)
         {
-            return _carDal.Get(c => c.ColorId == id);
+            return new SuccessDataResult < Car > (_carDal.Get(c => c.ColorId == id));
         }
     }
 }
