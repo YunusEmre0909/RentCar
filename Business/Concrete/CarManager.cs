@@ -34,6 +34,12 @@ namespace Business.Concrete
            
         }
 
+        public IResult Delete(Car car)
+        {
+            _carDal.Delete(car);
+            return new SuccessResult(Messages.CarDeleted);
+        }
+
         public IDataResult<List<Car>> GetAll()
         {
             if (DateTime.Now.Hour==22)
@@ -50,12 +56,18 @@ namespace Business.Concrete
 
         public IDataResult<Car> GetCarsByBrandId(int id)
         {
-            return new SuccessDataResult<Car>(_carDal.Get(c=>c.BrandId==id));
+            return new SuccessDataResult<Car>(_carDal.Get(c=>c.BrandId==id), Messages.CarListed);
         }
 
         public IDataResult<Car> GetCarsByColorId(int id)
         {
-            return new SuccessDataResult < Car > (_carDal.Get(c => c.ColorId == id));
+            return new SuccessDataResult < Car > (_carDal.Get(c => c.ColorId == id), Messages.CarListed);
+        }
+
+        public IResult Update(Car car)
+        {
+            _carDal.Update(car);
+            return new SuccessResult(Messages.CarUpdated);
         }
     }
 }
