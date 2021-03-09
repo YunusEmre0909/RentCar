@@ -13,5 +13,7 @@ namespace Business.Abstract
         IResult Delete(Rental rental);
         IDataResult<List<Rental>> GetAll();
         IDataResult<Rental> GetById(int id);
+       
+        
     }
 }

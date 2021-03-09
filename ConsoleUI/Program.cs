@@ -14,8 +14,9 @@ namespace ConsoleUI
             {
                 Console.WriteLine(user.FirstName);
             }
-            
-
+            RentalManager rentalManager = new RentalManager(new EfRentalDal());
+            var result = rentalManager.Add(new Rental {CarId=1004,CustomerId=1,RentDate=DateTime.Now });
+            Console.Write(result.Massage);
         }
     }
 }

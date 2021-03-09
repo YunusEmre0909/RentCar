@@ -2,9 +2,11 @@
 using Business.Constants;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
+using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Business.Concrete
@@ -20,12 +22,34 @@ namespace Business.Concrete
 
         public IResult Add(Rental rental)
         {
-            if (rental.ReturnDate==null)
+            Rental result =( (_rentalDal.GetAll(c => c.CarId == rental.CarId)).OrderByDescending(x=>x.RentDate)).FirstOrDefault();
+            if (result==null)
             {
-                return new ErrorResult(Messages.InvalidRental);
+                _rentalDal.Add(rental);
+                return new SuccessResult(Messages.RentalAdded);
             }
-            _rentalDal.Add(rental);
-            return new SuccessResult(Messages.RentalAdded);
+            else
+            {
+
+                if (result.ReturnDate.HasValue)
+                {
+                    if (DateTime.Compare(DateTime.Now,(DateTime)result.ReturnDate)>0)
+                    {
+                        _rentalDal.Add(rental);
+                        return new SuccessResult(Messages.RentalAdded);
+                   
+                    }
+                    else
+                    {
+                        return new ErrorResult(Messages.InvalidRental);
+                    }
+                
+                }
+
+            }
+
+            return new ErrorResult(Messages.InvalidRental);
+
         }
 
         public IResult Delete(Rental rental)
@@ -44,6 +68,8 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<Rental>(_rentalDal.Get(r => r.RentalId == id), Messages.RentalListed);
         }
+
+       
 
         public IResult Update(Rental rental)
         {
