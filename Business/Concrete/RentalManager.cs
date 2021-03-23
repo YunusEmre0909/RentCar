@@ -1,5 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
@@ -22,6 +24,11 @@ namespace Business.Concrete
 
         public IResult Add(Rental rental)
         {
+
+           ValidationTool.Validate(new RentalValidator(), rental);
+
+
+
             Rental result =( (_rentalDal.GetAll(c => c.CarId == rental.CarId)).OrderByDescending(x=>x.RentDate)).FirstOrDefault();
             if (result==null)
             {
