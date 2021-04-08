@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace Business.Constants
@@ -45,5 +46,6 @@ namespace Business.Constants
         public  static string CheckIfCarImageLimited="En fazla 5 resim  yüklenebilir";
         public static string CarImageAdded="Araba resmi eklendi";
         public static string CarImageDeleted="Araba resmi silindi";
+        public static string AuthorizationDenied="Yetkiniz yok";
     }
 }

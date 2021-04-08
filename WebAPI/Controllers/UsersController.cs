@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Core.Entities.Concrete;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -75,5 +76,28 @@ namespace WebAPI.Controllers
 
 
         }
+        [HttpGet("GetbyEmail")]
+        public IActionResult GetByEmail(string email)
+        {
+            var result = _userService.GetByEmail(email);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+            
+        }
+        [HttpGet("GetClaims")]
+        public IActionResult GetClaims(User user)
+        {
+            var result = _userService.GetClaims(user);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+
+        }
+
     }
 }
