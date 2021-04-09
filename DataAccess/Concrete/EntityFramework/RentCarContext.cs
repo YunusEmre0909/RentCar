@@ -8,7 +8,7 @@ using System.Text;
 namespace DataAccess.Concrete.EntityFramework
 {
     public class RentCarContext : DbContext
-    {
+    {  
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=RentCar;Trusted_Connection=true");

@@ -60,8 +60,8 @@ namespace Business.Concrete
 
         public IDataResult<User> GetByEmail(string email)
         {
-             
-            return new SuccessDataResult<User>(_userDal.Get(u => u.Email == email));
+            var result = _userDal.Get(u => u.Email == email);
+            return new SuccessDataResult<User>(result);
         }
     }
 }

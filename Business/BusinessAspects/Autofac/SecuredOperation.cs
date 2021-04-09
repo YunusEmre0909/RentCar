@@ -6,8 +6,8 @@ using System.Collections.Generic;
 using System.Text;
 using Castle.DynamicProxy;
 using Microsoft.Extensions.DependencyInjection;
-using Core.Extensions;
 using Business.Constants;
+using Core.Extensions;
 
 namespace Business.BusinessAspects.Autofac
 {
@@ -20,7 +20,7 @@ namespace Business.BusinessAspects.Autofac
         {
             _roles = roles.Split(',');
             _httpContextAccessor = ServiceTool.ServiceProvider.GetService<IHttpContextAccessor>();
-            
+
         }
 
         protected override void OnBefore(IInvocation invocation)
