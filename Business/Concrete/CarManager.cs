@@ -37,13 +37,15 @@ namespace Business.Concrete
            
 
         }
-
+        [CacheRemoveAspect("ICarService.Get")]
         public IResult Delete(Car car)
         {
             _carDal.Delete(car);
             return new SuccessResult(Messages.CarDeleted);
         }
-        [CacheAspect]
+        [CacheRemoveAspect("ICarService.Get")]
+        // [CacheAspect]
+        [SecuredOperation("user,moderatör")]
         public IDataResult<List<Car>> GetAll()
         {
             if (DateTime.Now.Hour==22)
@@ -57,17 +59,17 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<Car>(_carDal.Get(c => c.CarId == id), Messages.CarListed);
         }
-
+        [CacheAspect]
         public IDataResult<List<CarDetailDto>> GetCarDetails()
         {
             return new SuccessDataResult<List<CarDetailDto>>( _carDal.GetCarDetails());
         }
-
+        [CacheAspect]
         public IDataResult<Car> GetCarsByBrandId(int id)
         {
             return new SuccessDataResult<Car>(_carDal.Get(c=>c.BrandId==id), Messages.CarListed);
         }
-
+        [CacheAspect]
         public IDataResult<Car> GetCarsByColorId(int id)
         {
             return new SuccessDataResult < Car > (_carDal.Get(c => c.ColorId == id), Messages.CarListed);
