@@ -45,10 +45,10 @@ namespace Business.Concrete
         }
         [CacheRemoveAspect("ICarService.Get")]
         // [CacheAspect]
-        [SecuredOperation("user,moderatör")]
+       // [SecuredOperation("user,moderatör")]
         public IDataResult<List<Car>> GetAll()
         {
-            if (DateTime.Now.Hour==22)
+            if (DateTime.Now.Hour==3)
             {
                 return new ErrorDataResult<List<Car>>(Messages.MaintenanceTime);
             }
