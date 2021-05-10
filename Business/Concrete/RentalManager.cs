@@ -7,6 +7,7 @@ using Core.Utilities.Results;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
+using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -70,6 +71,11 @@ namespace Business.Concrete
         public IDataResult<List<Rental>> GetAll()
         {
             return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll(),Messages.RentalListed);
+        }
+
+        public IDataResult<List<CarRentalDetailDto>> GetRentalDetails()
+        {
+             return new SuccessDataResult<List<CarRentalDetailDto>>(_rentalDal.GetCarRentalDetails(),Messages.RentalListed);
         }
 
         public IDataResult<Rental> GetById(int id)
