@@ -47,5 +47,7 @@ namespace Business.Constants
         public static string CarImageAdded="Araba resmi eklendi";
         public static string CarImageDeleted="Araba resmi silindi";
         public static string AuthorizationDenied="Yetkiniz yok";
+
+        public static string CarDetailsReceived = "Araç detayları getirildi";
     }
 }

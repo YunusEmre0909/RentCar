@@ -56,6 +56,11 @@ namespace Business.Concrete
 
         }
 
+        public IDataResult<List<CarImage>> GetById(int id)
+        {
+            return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll(c=>c.CarId==id));
+        }
+
         public IDataResult<CarImage> Get(int id)
         {
             return new SuccessDataResult<CarImage>(_carImageDal.Get(c=>c.CarId==id));
