@@ -85,5 +85,13 @@ namespace WebAPI.Controllers
 
 
         }
+        [HttpGet("checkifCarisavaliable")]
+        public IActionResult CheckIfCarIsAvaliable(int carId,DateTime rentDate,DateTime returnDate)
+        {
+            var result = _rentalService.CheclIfCarIsAvaliable(carId,rentDate,returnDate);
+            return Ok(result);
+        }
+
+
     }
 }

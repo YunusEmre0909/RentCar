@@ -2,10 +2,9 @@
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
-using Core.CrossCuttingConcerns.Validation;
+using Castle.Core.Internal;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
-using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
 using Entities.DTOs;
 using System;
@@ -28,36 +27,8 @@ namespace Business.Concrete
         public IResult Add(Rental rental)
         {
 
-
-
-
-            Rental result =( (_rentalDal.GetAll(c => c.CarId == rental.CarId)).OrderByDescending(x=>x.RentDate)).FirstOrDefault();
-            if (result==null)
-            {
-                _rentalDal.Add(rental);
-                return new SuccessResult(Messages.RentalAdded);
-            }
-            else
-            {
-
-                if (result.ReturnDate.HasValue)
-                {
-                    if (DateTime.Compare(DateTime.Now,(DateTime)result.ReturnDate)>0)
-                    {
-                        _rentalDal.Add(rental);
-                        return new SuccessResult(Messages.RentalAdded);
-                   
-                    }
-                    else
-                    {
-                        return new ErrorResult(Messages.InvalidRental);
-                    }
-                
-                }
-
-            }
-
-            return new ErrorResult(Messages.InvalidRental);
+            _rentalDal.Add(rental);
+            return new SuccessResult(Messages.RentalAdded);
 
         }
 
@@ -89,6 +60,18 @@ namespace Business.Concrete
         {
             _rentalDal.Update(rental);
             return new SuccessResult(Messages.RentalUpdated);
+        }
+
+        public IResult CheclIfCarIsAvaliable(int carId, DateTime rentDate, DateTime returnDate)
+        {
+            var result = _rentalDal.GetAll(r => r.CarId == carId && 
+            r.ReturnDate >=rentDate);
+            if (result.IsNullOrEmpty()==false)
+            {
+                return new ErrorResult("Araba şuan kiralanamaz en yakın kiralanabilme tarihi :"+result[result.Count -1].ReturnDate.Value.ToString("yyyy-MM-dd"));
+            }
+                return new SuccessResult("Araba Kiralanabilir");
+            
         }
     }
 }
